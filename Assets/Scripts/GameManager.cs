@@ -13,8 +13,8 @@ public class GameManager : MonoBehaviour
     public GameState State;
     public GameMode Mode;
 
-    public static event Action<GameState> OnGameStateChanged;
-    public static event Action<GameMode> OnGameModeChanged;
+    //public static event Action<GameState> OnGameStateChanged;
+    //public static event Action<GameMode> OnGameModeChanged;
 
     private void Awake()
     {
@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        UpdateGameState(GameState.SetUp);
+        UpdateGameState(GameState.GenerateGrid);
     }
 
     public void UpdateGameState(GameState newState)
@@ -31,6 +31,9 @@ public class GameManager : MonoBehaviour
         State = newState;
         switch (newState)
         {
+            case GameState.GenerateGrid:
+                GridManager.Instance.GenerateGrid();
+                break;
             case GameState.SetUp:
                 HandleSetUp();
                 break;
@@ -50,9 +53,10 @@ public class GameManager : MonoBehaviour
                 throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
         }
 
-        OnGameStateChanged?.Invoke(newState);
+        
     }
 
+   
     public void UpdateGameMode(GameMode newMode)
     {
         Mode = newMode;
@@ -109,11 +113,12 @@ public class GameManager : MonoBehaviour
 
     private void HandleSetUp()
     {
-       
+        
     }
 
     public enum GameState { 
     
+        GenerateGrid,
         SetUp,
         Execution,
         Resolve,

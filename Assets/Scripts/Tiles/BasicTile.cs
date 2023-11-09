@@ -9,6 +9,7 @@ public abstract class BasicTile : MonoBehaviour
     [SerializeField] protected MeshRenderer _renderer;
 
     private Transform highlight;
+    private Transform selection;
     private RaycastHit raycastHit;
     public virtual void Init(int x, int y)
     {
@@ -38,7 +39,7 @@ public abstract class BasicTile : MonoBehaviour
                 {
                     Outline outline = highlight.gameObject.AddComponent<Outline>();
                     outline.enabled = true;
-                    highlight.gameObject.GetComponent<Outline>().OutlineColor = Color.magenta;
+                    highlight.gameObject.GetComponent<Outline>().OutlineColor = Color.black;
                     highlight.gameObject.GetComponent<Outline>().OutlineWidth = 7.0f;
                 }
             }
@@ -49,55 +50,28 @@ public abstract class BasicTile : MonoBehaviour
         }
 
 
-        // Selection
-        //if (Input.GetMouseButtonDown(0))
-        //{
-        //    if (highlight)
-        //    {
-        //        if (selection != null)
-        //        {
-        //            selection.gameObject.GetComponent<Outline>().enabled = false;
-        //        }
-        //        selection = raycastHit.transform;
-        //        selection.gameObject.GetComponent<Outline>().enabled = true;
-        //        highlight = null;
-        //    }
-        //    else
-        //    {
-        //        if (selection)
-        //        {
-        //            selection.gameObject.GetComponent<Outline>().enabled = false;
-        //            selection = null;
-        //        }
-        //    }
-        //}
-
-
-
-        //private void OnMouseEnter()
-        //{
-        //    if (gameObject.GetComponent<Outline>() != null)
-        //    {
-        //        gameObject.GetComponent<Outline>().enabled = true;
-        //    }
-        //    else
-        //    {
-        //        Outline outline = gameObject.AddComponent<Outline>();
-        //        outline.enabled = true;
-        //        gameObject.GetComponent<Outline>().OutlineColor = Color.magenta;
-        //        gameObject.GetComponent<Outline>().OutlineWidth = 7.0f;
-        //    }
-        //}
-
-        //private void OnMouseExit()
-        //{
-
-        //    if (gameObject.GetComponent<Outline>() != null)
-        //    {
-        //        gameObject.GetComponent<Outline>().enabled = false;
-        //    }
-        //}
-
+        //Selection
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (highlight)
+            {
+                if (selection != null)
+                {
+                    selection.gameObject.GetComponent<Outline>().enabled = false;
+                }
+                selection = raycastHit.transform;
+                selection.gameObject.GetComponent<Outline>().enabled = true;
+                highlight = null;
+            }
+            else
+            {
+                if (selection)
+                {
+                    selection.gameObject.GetComponent<Outline>().enabled = false;
+                    selection = null;
+                }
+            }
+        }
 
 
     }

@@ -16,6 +16,18 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5075384152277258019, guid: d3ea122444cedea44b25ba513e6383f7, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5075384152277258019, guid: d3ea122444cedea44b25ba513e6383f7, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5075384152277258019, guid: d3ea122444cedea44b25ba513e6383f7, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5075384152277258019, guid: d3ea122444cedea44b25ba513e6383f7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -79,8 +91,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _baseMaterial: {fileID: 2100000, guid: b58ef1741ee60ed4aaea6dde5cd04f99, type: 2}
-  _baseOffsetMaterial: {fileID: 2100000, guid: e227e0cd515067e4cb3a7149e259963e, type: 2}
   _renderer: {fileID: 8960350067003230580}
+  _baseOffsetMaterial: {fileID: 2100000, guid: e227e0cd515067e4cb3a7149e259963e, type: 2}
 --- !u!23 &8960350067003230580 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 5075384152275488195, guid: d3ea122444cedea44b25ba513e6383f7, type: 3}
