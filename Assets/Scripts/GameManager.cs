@@ -11,10 +11,6 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance;
     public GameState State;
-    public GameMode Mode;
-
-    //public static event Action<GameState> OnGameStateChanged;
-    //public static event Action<GameMode> OnGameModeChanged;
 
     private void Awake()
     {
@@ -56,21 +52,6 @@ public class GameManager : MonoBehaviour
         
     }
 
-   
-    public void UpdateGameMode(GameMode newMode)
-    {
-        Mode = newMode;
-        switch (newMode)
-        {
-            case GameMode.Developer:
-                break;
-            case GameMode.Player:
-                break;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(newMode), newMode, null);
-        }
-    }
-
     private bool IsDyomancyComplete()
     {
         //Add way to check if everything has been destoryed and if not return false
@@ -90,11 +71,6 @@ public class GameManager : MonoBehaviour
     {
         
         await Task.Delay(500);
-
-        if (Mode == GameMode.Developer)
-        {
-            UpdateGameState(GameState.SetUp);
-        }
 
         if (IsDyomancyComplete() == true)
         {
@@ -127,9 +103,4 @@ public class GameManager : MonoBehaviour
     
     }
 
-    public enum GameMode
-    {
-        Developer,
-        Player
-    }
 }
