@@ -19,6 +19,7 @@ public class Draggable : MonoBehaviour
     void OnMouseDown()
     {
         _dragOffset = transform.position - GetMousePos(transform);
+        transform.parent = null;
     }
 
     void OnMouseDrag()
@@ -27,30 +28,22 @@ public class Draggable : MonoBehaviour
     }
 
 
-    void OnMouseUp() 
+    void OnMouseUp()
     {
-        float closestDistance = -1;
-        Transform closestTile = null;
+        Transform tMin = null;
+        float minDist = Mathf.Infinity;
+        Vector3 currentPos = transform.position;
         foreach (Transform tile in GridManager.Instance.Tiles)
         {
-            float currentDistance = Vector3.Distance(transform.position, tile.position);
-            if (closestTile == null || currentDistance < closestDistance)
+            float dist = Vector3.Distance(tile.position, currentPos);
+            if (dist < minDist)
             {
-                closestTile = tile;
-                closestDistance = currentDistance;
+                tMin = tile;
+                minDist = dist;
             }
         }
-
-        if (closestTile != null && closestDistance <= snapRange)
-        {
-            transform.SetParent(closestTile);
-            transform.localPosition = new Vector3(0, 0, 0);
-        }
-        else
-        {
-            transform.SetParent(originalParent);
-            transform.localPosition = new Vector3(0, 0, 0);
-        }
+        transform.SetParent(tMin);
+        transform.localPosition = new Vector3(0, 1, 0);
     }
 
 

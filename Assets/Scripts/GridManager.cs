@@ -24,13 +24,15 @@ public class GridManager : MonoBehaviour
 
     public void GenerateGrid()
     {
-            if (_grid.transform.childCount > 0)
-            {
+          Tiles.Clear();
+
+        if (_grid.transform.childCount > 0)
+        {
                 foreach (Transform tile in _grid.transform)
                 {
                     GameObject.Destroy(tile.gameObject);
                 }
-            }
+        }
          
 
         for (int x = 0; x < _width; x++)
@@ -70,7 +72,7 @@ public class GridManager : MonoBehaviour
         //    zDistance = -_width;
         //}
 
-        //_cam.transform.position = new Vector3((float)_grid.transform.position.x / 2 - 0.5f, (float)_grid.transform.position.y / 2 - 0.5f, 0f);
+        //_cam.transform.position = new Vector3((float)_grid.transform.position.x / 2 - 0.5f, (float)_grid.transform.position.y / 2 - 0.5f, zDistance);
     }
 
 }

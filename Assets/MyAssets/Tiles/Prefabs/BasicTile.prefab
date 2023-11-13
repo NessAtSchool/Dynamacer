@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 5075384152276487939}
   - component: {fileID: 5075384152275488195}
   - component: {fileID: 5075384152277258017}
-  - component: {fileID: -4557247948015496191}
   - component: {fileID: -5556347303767407349}
   m_Layer: 5
   m_Name: BasicTile
@@ -104,22 +103,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.99999, y: 0.15166518, z: 0.9999902}
   m_Center: {x: -0.499995, y: 0.07583259, z: -0.4999951}
---- !u!54 &-4557247948015496191
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5075384152277488387}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 126
-  m_CollisionDetection: 0
 --- !u!114 &-5556347303767407349
 MonoBehaviour:
   m_ObjectHideFlags: 0

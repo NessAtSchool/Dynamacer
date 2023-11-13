@@ -96,5 +96,8 @@ public abstract class Tile : MonoBehaviour
         gameObject.GetComponent<Outline>().enabled = false;
     }
 
-      
+  
+
+
+
 }
