@@ -7,8 +7,14 @@ public class Draggable : MonoBehaviour
     private Vector3 _dragOffset;
     private Camera _cam;
     private Transform originalParent;
+    private Transform newParent;
+    private Transform oldParent;
 
-    private float snapRange = 0.5f;
+    private Transform tMin = null;
+    private float minDist;
+    private Vector3 currentPos;
+
+    private float snapRange = 4.5f;
 
     void Awake()
     {
@@ -19,7 +25,7 @@ public class Draggable : MonoBehaviour
     void OnMouseDown()
     {
         _dragOffset = transform.position - GetMousePos(transform);
-        transform.parent = null;
+        transform.SetParent(null);
     }
 
     void OnMouseDrag()
@@ -27,12 +33,20 @@ public class Draggable : MonoBehaviour
         transform.position = GetMousePos(transform) + _dragOffset;
     }
 
+    private void OnMouseExit()
+    {
+        foreach (Tile tile in transform.GetComponent<Bomb>().AffectedArea)
+        {
+            tile.gameObject.GetComponent<AffectedAreaOutline>().enabled = false;
+        }
+    }
+
 
     void OnMouseUp()
     {
-        Transform tMin = null;
-        float minDist = Mathf.Infinity;
-        Vector3 currentPos = transform.position;
+        tMin = null;
+        minDist = Mathf.Infinity;
+        currentPos = transform.position;
         foreach (Transform tile in GridManager.Instance.Tiles)
         {
             float dist = Vector3.Distance(tile.position, currentPos);
@@ -42,8 +56,49 @@ public class Draggable : MonoBehaviour
                 minDist = dist;
             }
         }
-        transform.SetParent(tMin);
-        transform.localPosition = new Vector3(0, 1, 0);
+
+       //FIX GLITCH THAT BOMB GOES TO EDGE WHEN CLICKED
+
+        //Add snap range back to it goes t original parents of none of the tiles are close enough
+        if (tMin.GetComponent<Tile>().AmIOccupied() == true)
+        {
+            transform.SetParent(originalParent);
+        }
+        else if (minDist >= snapRange)
+        {
+            transform.SetParent(originalParent);
+        }
+        else
+        {
+            if (tMin != oldParent)
+            {
+                foreach (Tile tile in transform.GetComponent<Bomb>().AffectedArea)
+                {
+                    tile.gameObject.GetComponent<AffectedAreaOutline>().enabled = false;
+                }
+
+                if (transform.GetComponent<Bomb>() != null)
+                {
+                    transform.SetParent(tMin);
+                    transform.GetComponent<Bomb>().HighlightBobShape(tMin);
+                    Debug.Log("highlighed shpae");
+                }
+            }
+            else
+            {
+                foreach (Tile tile in transform.GetComponent<Bomb>().AffectedArea)
+                {
+                    tile.gameObject.GetComponent<AffectedAreaOutline>().enabled = false;
+                }
+            }
+
+            transform.localPosition = new Vector3(0, 1, 0);
+            oldParent = tMin;
+        }
+
+      
+
+
     }
 
 

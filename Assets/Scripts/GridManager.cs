@@ -20,6 +20,10 @@ public class GridManager : MonoBehaviour
     public void Start()
     {
         _grid = GameObject.Find("Grid");
+        foreach (Transform tile in _grid.transform)
+        {
+            Tiles.Add(tile.transform);
+        }
     }
 
     public void GenerateGrid()

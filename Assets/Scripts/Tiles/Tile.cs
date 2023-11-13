@@ -96,6 +96,17 @@ public abstract class Tile : MonoBehaviour
         gameObject.GetComponent<Outline>().enabled = false;
     }
 
+    public bool AmIOccupied()
+    {
+        if (transform.childCount > 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
   
 
 

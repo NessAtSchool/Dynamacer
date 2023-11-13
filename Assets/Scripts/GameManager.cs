@@ -28,7 +28,6 @@ public class GameManager : MonoBehaviour
         switch (newState)
         {
             case GameState.GenerateGrid:
-                GridManager.Instance.GenerateGrid();
                 break;
             case GameState.SetUp:
                 HandleSetUp();
