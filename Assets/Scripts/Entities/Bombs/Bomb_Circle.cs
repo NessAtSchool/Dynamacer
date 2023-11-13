@@ -15,29 +15,28 @@ public class Bomb_Circle : Bomb
         //TODO IMPLEMENT CIRCLE METHOD
 
         print($"{x},{y}");
-        //for (int i = 0; i < range; i++)
-        //{
-        //    for (int j = 0; j < range; j++)
-        //    {
-        //        int tileX = x - i;
-        //        int tileY = y - j;
 
-        //        // Calculate distance between the current tile and the center
-        //        float distance = Mathf.Sqrt(Mathf.Pow(tileX - centerX, 2) + Mathf.Pow(tileY - centerY, 2));
+        foreach (Transform tile in GridManager.Instance.Tiles)
+        {
+            for (int i = 0; i < range; i++)
+            {
+                if (tile.gameObject.name == $"Tile {x},{y + i}" || tile.gameObject.name == $"Tile {x + i},{y}" ||
+                    tile.gameObject.name == $"Tile {x},{y - i}" || 
+                    tile.gameObject.name == $"Tile {x - i},{y}" ||tile.gameObject.name == $"Tile {x + i},{y + i}" ||
+                    tile.gameObject.name == $"Tile {x - i},{y - i}" ||
+                    tile.gameObject.name == $"Tile {x + i},{y - i}" || tile.gameObject.name == $"Tile {x - i},{y + i}")
+                {
+                    AffectedArea.Add(tile.gameObject.GetComponent<Tile>());
+                }
+            }
 
-        //        // Check if the distance is within the circular area
-        //        if (distance <= 5)
-        //        {
-        //            // This tile is within the circular area
-        //            string tileName = $"Tile {tileX},{tileY}";
-        //            if (IsTileValid(tileName))
-        //            {
-        //                // Assuming IsTileValid is a function to check if the tile exists or fits certain conditions
-        //                Tile tile = GetTileFromName(tileName);
-        //                AffectedArea.Add(tile);
-        //            }
-        //        }
-        //    }
-        //}
+
+        }
+
+        foreach (Tile tile in AffectedArea)
+        {
+            tile.gameObject.GetComponent<AffectedAreaOutline>().enabled = true;
+        }
+
     }
 }
