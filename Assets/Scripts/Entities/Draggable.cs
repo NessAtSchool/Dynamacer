@@ -35,18 +35,27 @@ public class Draggable : MonoBehaviour
 
     private void OnMouseExit()
     {
-        foreach (Tile tile in transform.GetComponent<Bomb>().AffectedArea)
+        if (gameObject.GetComponent<Bomb>() != null)
         {
-            tile.gameObject.GetComponent<AffectedAreaOutline>().enabled = false;
+            foreach (Tile tile in transform.GetComponent<Bomb>().AffectedArea)
+            {
+                tile.gameObject.GetComponent<AffectedAreaOutline>().enabled = false;
+            }
         }
+       
     }
 
     private void OnMouseOver()
     {
-        foreach (Tile tile in transform.GetComponent<Bomb>().AffectedArea)
+        if (gameObject.GetComponent<Bomb>() != null)
         {
-            tile.gameObject.GetComponent<AffectedAreaOutline>().enabled = true;
+            foreach (Tile tile in transform.GetComponent<Bomb>().AffectedArea)
+            {
+                tile.gameObject.GetComponent<AffectedAreaOutline>().enabled = true;
+            }
         }
+
+           
     }
 
 
@@ -57,56 +66,71 @@ public class Draggable : MonoBehaviour
             tMin = null;
             minDist = Mathf.Infinity;
             currentPos = transform.position;
-            foreach (Transform tile in GridManager.Instance.Tiles)
+
+            if (gameObject.GetComponent<Bomb>() != null)
             {
-                float dist = Vector3.Distance(tile.position, currentPos);
-                if (dist < minDist)
+
+                foreach (Transform tile in GridManager.Instance.Tiles)
                 {
-                    tMin = tile;
-                    minDist = dist;
+                    float dist = Vector3.Distance(tile.position, currentPos);
+                    if (dist < minDist)
+                    {
+                        tMin = tile;
+                        minDist = dist;
+                    }
                 }
-            }
 
-            //FIX GLITCH THAT BOMB GOES TO EDGE WHEN CLICKED
-            //Add feature that bomb can return to inventory, maybe by tagging it as tile idk yet!
-            //Add snap range back to it goes t original parents of none of the tiles are close enough
-            if (tMin.GetComponent<Tile>().AmIOccupied() == true)
-            {
-                transform.SetParent(originalParent);
-                transform.position = Vector3.zero;
-            }
-            else if (minDist >= snapRange)
-            {
-                transform.SetParent(originalParent);
-                transform.position = Vector3.zero;
-            }
-            else
-            {
-                if (tMin != oldParent)
+                //FIX GLITCH THAT BOMB GOES TO EDGE WHEN CLICKED
+                //Add feature that bomb can return to inventory, maybe by tagging it as tile idk yet!
+                //Add snap range back to it goes t original parents of none of the tiles are close enough
+                if (tMin.GetComponent<Tile>().AmIOccupied() == true)
                 {
-                    foreach (Tile tile in transform.GetComponent<Bomb>().AffectedArea)
-                    {
-                        tile.gameObject.GetComponent<AffectedAreaOutline>().enabled = false;
-                    }
-
-                    if (transform.GetComponent<Bomb>() != null)
-                    {
-                        transform.SetParent(tMin);
-                        transform.GetComponent<Bomb>().HighlightBobShape(tMin);
-                        //Debug.Log("highlighed shpae");
-                    }
+                    transform.SetParent(originalParent);
+                    transform.position = Vector3.zero;
+                }
+                else if (minDist >= snapRange)
+                {
+                    transform.SetParent(originalParent);
+                    transform.position = Vector3.zero;
                 }
                 else
                 {
-                    foreach (Tile tile in transform.GetComponent<Bomb>().AffectedArea)
+                    if (tMin != oldParent)
                     {
-                        tile.gameObject.GetComponent<AffectedAreaOutline>().enabled = false;
+                        foreach (Tile tile in transform.GetComponent<Bomb>().AffectedArea)
+                        {
+                            tile.gameObject.GetComponent<AffectedAreaOutline>().enabled = false;
+                        }
+
+                        if (transform.GetComponent<Bomb>() != null)
+                        {
+                            transform.SetParent(tMin);
+                            transform.GetComponent<Bomb>().HighlightBobShape(tMin);
+                            //Debug.Log("highlighed shpae");
+                        }
                     }
+                    else
+                    {
+                        foreach (Tile tile in transform.GetComponent<Bomb>().AffectedArea)
+                        {
+                            tile.gameObject.GetComponent<AffectedAreaOutline>().enabled = false;
+                        }
+                    }
+
+                    transform.localPosition = new Vector3(0, 1, 0);
+                    oldParent = tMin;
                 }
 
-                transform.localPosition = new Vector3(0, 1, 0);
-                oldParent = tMin;
+               
+
             }
+
+            //else
+            //{
+            //    transform.SetParent(GridManager.Instance._inventory.transform);
+            //    transform.localPosition = new Vector3(0, 0, -250);
+
+            //}
         }
         return;
         

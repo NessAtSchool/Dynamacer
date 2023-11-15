@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -125,21 +127,21 @@ public class GameManager : MonoBehaviour
         _gridManager._grid = _gridManager.OrginalGrid;
         _gridManager._grid.name = "Grid";
 
-
-        foreach (GameObject bomb in _gridManager._inventory.transform)
+        foreach (Transform bomb in _gridManager._inventory.transform)
         {
-            Destroy(bomb);
+            Destroy(bomb.gameObject);
+
         }
 
-        foreach (GameObject bomb in _gridManager.StartingBombs)
+        foreach (Transform bomb in _gridManager.CopyKeeper.transform)
         {
-            bomb.SetActive(true);
-            bomb.transform.SetParent(_gridManager._inventory.transform);
-            
+            Instantiate(bomb, _gridManager._inventory.transform);
         }
 
-        
-
+        foreach(Transform bomb in _gridManager._inventory.transform)
+        {
+            bomb.gameObject.SetActive(true);
+        }
 
         _gridManager.PrepareReset();
 
@@ -147,6 +149,51 @@ public class GameManager : MonoBehaviour
         GameManager.Instance.UpdateGameState(GameManager.GameState.SetUp);
 
     }
+
+    public void Next()
+    {
+        if (SceneManager.GetActiveScene().name == "Start")
+        {
+            SceneManager.LoadScene("Level_1");
+        }
+        else
+        {
+            int currentLvlInt = int.Parse(RemoveLettersExample.RemoveLetters(SceneManager.GetActiveScene().name));
+            currentLvlInt++;
+
+            Scene scene = SceneManager.GetSceneByName($"Level_{currentLvlInt}");
+
+            if (scene.IsValid())
+            {
+                SceneManager.LoadScene($"Level_{currentLvlInt}");
+            }
+            else
+            {
+                print("Thank you for playing you've reached the end of this demo!");
+            }
+        }
+        
+      
+      
+    }
+
+    public void Previous()
+    {
+        int currentLvlInt = int.Parse(RemoveLettersExample.RemoveLetters(SceneManager.GetActiveScene().name));
+        currentLvlInt--;
+
+        Scene scene = SceneManager.GetSceneByName($"Level_{currentLvlInt}");
+
+        if (scene.IsValid())
+        {
+            SceneManager.LoadScene($"Level_{currentLvlInt}");
+        }
+        else
+        {
+            print("This is the first level!");
+        }
+    }
+
 
 
     public enum GameState { 
@@ -161,4 +208,23 @@ public class GameManager : MonoBehaviour
     }
 
 
+}
+
+public class RemoveLettersExample
+{
+    public static void Main()
+    {
+        string inputString = "abc123def456gh";
+        string result = RemoveLetters(inputString);
+
+        Console.WriteLine("Result: " + result);
+    }
+
+    public static string RemoveLetters(string input)
+    {
+        // Use regular expression to remove letters
+        string result = Regex.Replace(input, "[^0-9]", "");
+
+        return result;
+    }
 }

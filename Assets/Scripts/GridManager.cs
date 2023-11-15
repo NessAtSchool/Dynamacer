@@ -11,10 +11,10 @@ public class GridManager : MonoBehaviour
     [SerializeField] public GameObject _grid;
     public GameObject _inventory;
     public GameObject OrginalGrid;
-    public GameObject OgInventory;
     public List<Transform> Tiles;
     private List<Bomb> _bombsToDetenate = new List<Bomb>();
     public List<GameObject> StartingBombs = new List<GameObject>();
+    public GameObject CopyKeeper;
 
     private void Awake()
     {
@@ -90,7 +90,7 @@ public class GridManager : MonoBehaviour
         }
 
         GameManager.Instance.UpdateGameState(GameManager.GameState.Resolve);
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(1);
     }
 
 
@@ -114,14 +114,17 @@ public class GridManager : MonoBehaviour
         OrginalGrid = Instantiate(_grid);
         OrginalGrid.SetActive(false);
 
-
-        StartingBombs.Clear();
-        foreach (Transform bomb in _inventory.transform)
+        if (StartingBombs.Count <= 0)
         {
-            GameObject bombReset = Instantiate(bomb.gameObject, GameObject.Find("CopyKeeper").transform);
-            StartingBombs.Add(bombReset);
-            bombReset.gameObject.SetActive(false);
+            foreach (Transform bomb in _inventory.transform)
+            {
+                GameObject bombReset = Instantiate(bomb.gameObject, CopyKeeper.transform);
+                StartingBombs.Add(bombReset);
+                bombReset.SetActive(false);
+            }
+
         }
+    
 
         Tiles.Clear();
         foreach (Transform tile in _grid.transform)

@@ -20,10 +20,10 @@ public class Bomb : Draggable, IDamageable
 
 
 
-    private void Update()
-    {
-        return;
-    }
+    //private void LateUpdate()
+    //{
+    //    return;
+    //}
 
     public virtual void HighlightBobShape( Transform parentTile)
     {
@@ -67,8 +67,14 @@ public class Bomb : Draggable, IDamageable
 
     }
 
+    public void ModifyRange(int mod)
+    {
+        _range += mod;
+        HighlightBobShape(transform.parent.transform);
+    }
+
     public int GetDamageDealt(int baseDamage)
     {
-        return _baseDamage;
+        return baseDamage;
     }
 }
