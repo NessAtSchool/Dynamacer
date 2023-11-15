@@ -14,11 +14,11 @@ public class Bomb_Circle : Bomb
 
         //TODO IMPLEMENT CIRCLE METHOD
 
-        print($"{x},{y}");
+        //print($"{x},{y}");
 
         foreach (Transform tile in GridManager.Instance.Tiles)
         {
-            for (int i = 0; i < range; i++)
+            for (int i = 0; i < _range; i++)
             {
                 if (tile.gameObject.name == $"Tile {x},{y + i}" || tile.gameObject.name == $"Tile {x + i},{y}" ||
                     tile.gameObject.name == $"Tile {x},{y - i}" || 

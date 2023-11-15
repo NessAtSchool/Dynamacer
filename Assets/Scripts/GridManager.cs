@@ -8,33 +8,32 @@ public class GridManager : MonoBehaviour
     [SerializeField] private int _width, _height;
     [SerializeField] Tile _grassTile, _waterTile;
     [SerializeField] private Camera _cam;
-    [SerializeField] private GameObject _grid;
+    [SerializeField] public GameObject _grid;
+    public GameObject _inventory;
+    public GameObject OrginalGrid;
+    public GameObject OgInventory;
     public List<Transform> Tiles;
+    private List<Bomb> _bombsToDetenate = new List<Bomb>();
+    public List<GameObject> StartingBombs = new List<GameObject>();
 
     private void Awake()
     {
         Instance = this;
         _cam = Camera.main;
+
+        PrepareReset();
     }
 
-    public void Start()
-    {
-        _grid = GameObject.Find("Grid");
-        foreach (Transform tile in _grid.transform)
-        {
-            Tiles.Add(tile.transform);
-        }
-    }
-
+    
     public void GenerateGrid()
     {
-          Tiles.Clear();
+        Tiles.Clear();
 
         if (_grid.transform.childCount > 0)
         {
                 foreach (Transform tile in _grid.transform)
                 {
-                    GameObject.Destroy(tile.gameObject);
+                   Destroy(tile.gameObject);
                 }
         }
          
@@ -77,6 +76,59 @@ public class GridManager : MonoBehaviour
         //}
 
         //_cam.transform.position = new Vector3((float)_grid.transform.position.x / 2 - 0.5f, (float)_grid.transform.position.y / 2 - 0.5f, zDistance);
+        GameManager.Instance.UpdateGameState(GameManager.GameState.SetUp);
+    }
+
+    IEnumerator DetenateAllTheBombs()
+    {
+        foreach (Bomb bomb in _bombsToDetenate)
+        {
+            if (bomb != null)
+            {
+                bomb.Detenate();
+            }
+        }
+
+        GameManager.Instance.UpdateGameState(GameManager.GameState.Resolve);
+        yield return new WaitForSeconds(3);
+    }
+
+
+    public void StartDetenation()
+    {
+        _bombsToDetenate.Clear();
+        foreach (Transform tile in Tiles)
+        {
+            if (tile.GetComponentInChildren<Bomb>() != null)
+            {
+                _bombsToDetenate.Add(tile.GetComponentInChildren<Bomb>());
+            }
+        }
+
+        StartCoroutine(DetenateAllTheBombs());
+
+    }
+
+    public void PrepareReset() 
+    {
+        OrginalGrid = Instantiate(_grid);
+        OrginalGrid.SetActive(false);
+
+
+        StartingBombs.Clear();
+        foreach (Transform bomb in _inventory.transform)
+        {
+            GameObject bombReset = Instantiate(bomb.gameObject, GameObject.Find("CopyKeeper").transform);
+            StartingBombs.Add(bombReset);
+            bombReset.gameObject.SetActive(false);
+        }
+
+        Tiles.Clear();
+        foreach (Transform tile in _grid.transform)
+        {
+            Tiles.Add(tile.transform);
+        }
+
     }
 
 }

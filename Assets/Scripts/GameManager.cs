@@ -7,9 +7,9 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     //Add a menu manager later to control the popups when you win/lose Check tarodev video again
-
-
+    
     public static GameManager Instance;
+    private GridManager _gridManager;
     public GameState State;
 
     private void Awake()
@@ -19,7 +19,17 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        UpdateGameState(GameState.GenerateGrid);
+        _gridManager = GridManager.Instance;
+
+        if (_gridManager._grid == null)
+        {
+            UpdateGameState(GameState.GenerateGrid);
+        }
+        else
+        {
+            UpdateGameState(GameState.SetUp);
+        }
+       
     }
 
     public void UpdateGameState(GameState newState)
@@ -53,23 +63,34 @@ public class GameManager : MonoBehaviour
 
     private bool IsDyomancyComplete()
     {
-        //Add way to check if everything has been destoryed and if not return false
+        foreach (Transform tile in _gridManager.Tiles)
+        {
+            if (tile.GetComponentInChildren<IDamageable>() != null)
+            {
+                if (tile.GetComponentInChildren<IDamageable>().IsDestroyed == false)
+                {
+                    return false;
+                } 
+                
+            }
+        }
+
         return true;
     }
 
     private void HandleLoss()
     {
-        
+        print("BOO! They're still alive!");
     }
 
     private void HandleVictory()
     {
-        
+        print("YAY! Dynamancy Complete!");
     }
     private async void HandleResolve()
     {
         
-        await Task.Delay(500);
+        await Task.Delay(1000);
 
         if (IsDyomancyComplete() == true)
         {
@@ -83,13 +104,50 @@ public class GameManager : MonoBehaviour
     }
     private void HandleExecution()
     {
-        
+        _gridManager.StartDetenation();
+    }
+    public void HandleExecutionButton()
+    {
+        HandleExecution();
     }
 
     private void HandleSetUp()
     {
         
     }
+
+    //DO THIS WITH SCIPTABLE OBJECTS IN THE FEATURE!!!!
+    public void Reset()
+    {
+        var oldGrid = GameObject.Find("Grid");
+        Destroy(oldGrid);
+        _gridManager.OrginalGrid.SetActive(true);
+        _gridManager._grid = _gridManager.OrginalGrid;
+        _gridManager._grid.name = "Grid";
+
+
+        foreach (GameObject bomb in _gridManager._inventory.transform)
+        {
+            Destroy(bomb);
+        }
+
+        foreach (GameObject bomb in _gridManager.StartingBombs)
+        {
+            bomb.SetActive(true);
+            bomb.transform.SetParent(_gridManager._inventory.transform);
+            
+        }
+
+        
+
+
+        _gridManager.PrepareReset();
+
+
+        GameManager.Instance.UpdateGameState(GameManager.GameState.SetUp);
+
+    }
+
 
     public enum GameState { 
     
@@ -101,5 +159,6 @@ public class GameManager : MonoBehaviour
         Lose
     
     }
+
 
 }
