@@ -8,8 +8,8 @@ public class Bomb_Horizontal :Bomb
     {
         AffectedArea.Clear();
 
-        float x = parentTile.localPosition.x;
-        float y = parentTile.localPosition.y;
+        int x = (int)parentTile.localPosition.x;
+        int y = (int)parentTile.localPosition.y;
 
 
         //print($"{x},{y}");

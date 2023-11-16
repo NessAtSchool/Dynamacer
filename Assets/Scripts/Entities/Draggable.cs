@@ -106,7 +106,7 @@ public class Draggable : MonoBehaviour
                         {
                             transform.SetParent(tMin);
                             transform.GetComponent<Bomb>().HighlightBobShape(tMin);
-                            //Debug.Log("highlighed shpae");
+
                         }
                     }
                     else
@@ -125,12 +125,12 @@ public class Draggable : MonoBehaviour
 
             }
 
-            //else
-            //{
-            //    transform.SetParent(GridManager.Instance._inventory.transform);
-            //    transform.localPosition = new Vector3(0, 0, -250);
+            else
+            {
+                transform.SetParent(GridManager.Instance._inventory.transform);
+                transform.localPosition = new Vector3(0, 0, -250);
 
-            //}
+            }
         }
         return;
         

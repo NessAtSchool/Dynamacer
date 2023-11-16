@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 9144533706161598973}
   - component: {fileID: 3710392136771779736}
   - component: {fileID: 5764439242546107312}
-  - component: {fileID: 5076603128876815716}
+  - component: {fileID: 2021165615439740485}
   m_Layer: 5
   m_Name: RangeUp
   m_TagString: Untagged
@@ -188,6 +188,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fbd1c7c873207e4a8f3e4ff862ab3ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _powerUpColor: {r: 0, g: 0.84313726, b: 0.8156863, a: 1}
   _rangeUpAmount: 1
 --- !u!54 &5764439242546107312
 Rigidbody:
@@ -205,8 +206,8 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 120
   m_CollisionDetection: 0
---- !u!64 &5076603128876815716
-MeshCollider:
+--- !u!65 &2021165615439740485
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -215,7 +216,6 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: a7b94700af64d4331af2f449bf00b987, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 0.21674055, y: 0.6, z: 0.33536017}
+  m_Center: {x: -0.00000018830936, y: 0.00000005974089, z: 0.025114357}

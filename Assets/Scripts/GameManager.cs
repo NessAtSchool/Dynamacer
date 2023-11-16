@@ -160,15 +160,16 @@ public class GameManager : MonoBehaviour
         {
             int currentLvlInt = int.Parse(RemoveLettersExample.RemoveLetters(SceneManager.GetActiveScene().name));
             currentLvlInt++;
+            //print($"Level_{currentLvlInt}");
+            //Scene scene = SceneManager.GetSceneByName($"Level_{currentLvlInt}");
 
-            Scene scene = SceneManager.GetSceneByName($"Level_{currentLvlInt}");
-
-            if (scene.IsValid())
+            if (currentLvlInt < 6)
             {
                 SceneManager.LoadScene($"Level_{currentLvlInt}");
             }
             else
             {
+                SceneManager.LoadScene("End");
                 print("Thank you for playing you've reached the end of this demo!");
             }
         }
@@ -184,13 +185,13 @@ public class GameManager : MonoBehaviour
 
         Scene scene = SceneManager.GetSceneByName($"Level_{currentLvlInt}");
 
-        if (scene.IsValid())
+        if (currentLvlInt > 1)
         {
             SceneManager.LoadScene($"Level_{currentLvlInt}");
         }
         else
         {
-            print("This is the first level!");
+            SceneManager.LoadScene("Start");
         }
     }
 
