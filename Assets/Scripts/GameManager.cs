@@ -183,7 +183,7 @@ public class GameManager : MonoBehaviour
         int currentLvlInt = int.Parse(RemoveLettersExample.RemoveLetters(SceneManager.GetActiveScene().name));
         currentLvlInt--;
 
-        Scene scene = SceneManager.GetSceneByName($"Level_{currentLvlInt}");
+        
 
         if (currentLvlInt > 1)
         {
