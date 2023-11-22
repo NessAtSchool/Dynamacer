@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,7 +8,9 @@ public abstract class Tile : MonoBehaviour
 {
     [SerializeField] protected Material _baseMaterial;
     [SerializeField] protected MeshRenderer _renderer;
+    [SerializeField] private HashSet<ElementType> _detonatedBombTypes = new HashSet<ElementType>();
 
+    public HashSet<ElementType> DetonatedBombTypes { get { return _detonatedBombTypes; } private set { _detonatedBombTypes = value; } }
     private Transform highlight;
     private Transform selection;
     private RaycastHit raycastHit;
@@ -16,7 +19,6 @@ public abstract class Tile : MonoBehaviour
     {
         _renderer.material = _baseMaterial;
     }
-
 
     void LateUpdate()
     {
@@ -78,6 +80,7 @@ public abstract class Tile : MonoBehaviour
         return;
     }
 
+   
     private void OnCollisionEnter(Collision col)
     {
         
@@ -111,7 +114,29 @@ public abstract class Tile : MonoBehaviour
             return false;
         }
     }
-  
+
+    public IEnumerator HandleBombDetonation(ElementType bombType)
+    {
+            _detonatedBombTypes.Add(bombType);
+
+            // Check if both types of bombs have detonated
+            if (_detonatedBombTypes.Count == 2)
+            {
+                foreach (ElementType item in _detonatedBombTypes)
+                {
+                    if (GetComponentInChildren<Building>() != null)
+                    {
+                        GetComponentInChildren<Building>().MakeImmuneTo(item);
+                    }
+                }
+   
+               
+            }
+
+            yield return new WaitForSeconds(1);
+            _detonatedBombTypes.Clear();
+      
+    }
 
 
 

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Bomb : MonoBehaviour,IDraggable, IDamageable
@@ -9,14 +10,28 @@ public class Bomb : MonoBehaviour,IDraggable, IDamageable
     private int _baseDamage = 1;
     private int _health = 1;
     private bool _isDestroyed = false;
-    public GameObject DeathParticleSystemPrefab;
+    private GameObject DeathParticleSystemPrefab;
+
+    public GameObject FireExplosionPrefab;
+    public GameObject WaterExplosionPrefab;
+    public GameObject StandardExplosionPrefab;
+
     public Transform ExplosionPosition;
 
+    [SerializeField] private ElementType _element = ElementType.None;
 
+
+
+    public ElementType Element { get { return _element; } private set { _element = value; } }
     public int Range { get { return _range; } private set { _range = value; } }
     public int Damage { get { return _baseDamage; } private set { _baseDamage = value; } }
     public int Health { get { return _health; } private set { _health = value; } }
     public bool IsDestroyed { get { return _isDestroyed; } private set { _isDestroyed = value; } }
+
+    private void Start()
+    {
+        ModifyElement(_element);
+    }
 
 
     public virtual void HighlightBobShape(Transform parentTile)
@@ -24,9 +39,8 @@ public class Bomb : MonoBehaviour,IDraggable, IDamageable
         return;
     }
 
-    public virtual void Detenate()
+    public virtual void Detonate()
     {
-        //TODO ADD FANCY EFFECTS FOR THE EXPLOSIONS ASWELL AS MUSIC
 
         foreach (Tile tile in AffectedArea)
         {
@@ -34,7 +48,7 @@ public class Bomb : MonoBehaviour,IDraggable, IDamageable
             {
                 if (target.GetComponentInChildren<IDamageable>() != null)
                 {
-                    target.GetComponent<IDamageable>().TakeDamage(GetDamageDealt(_baseDamage));
+                    target.GetComponent<IDamageable>().TakeDamage(GetDamageDealt(_baseDamage), _element);
                 }
                 else
                 {
@@ -44,7 +58,12 @@ public class Bomb : MonoBehaviour,IDraggable, IDamageable
         }
     }
 
-    public void TakeDamage(int amountOfDamage)
+
+
+
+ 
+
+    public void TakeDamage(int amountOfDamage, ElementType elementype)
     {
         _health -= amountOfDamage;
 
@@ -53,7 +72,10 @@ public class Bomb : MonoBehaviour,IDraggable, IDamageable
             _isDestroyed = true;
 
             transform.gameObject.GetComponent<Renderer>().enabled = false;
-            transform.GetChild(0).gameObject.GetComponent<Renderer>().enabled = false;
+            foreach (Renderer thing in transform.GetComponentsInChildren<Renderer>())
+            {
+                thing.enabled = false;
+            }
             DeathParticleSystemPrefab.transform.localScale = ExplosionPosition.localScale;
             Instantiate(DeathParticleSystemPrefab, ExplosionPosition.position, ExplosionPosition.rotation);
 
@@ -65,6 +87,29 @@ public class Bomb : MonoBehaviour,IDraggable, IDamageable
     {
         _range += mod;
         HighlightBobShape(transform.parent.transform);
+    }
+
+    public void ModifyElement(ElementType element)
+    {
+        _element = element;
+
+        switch (_element)
+        {
+            case ElementType.None:
+                DeathParticleSystemPrefab = StandardExplosionPrefab;
+                break;
+            case ElementType.Water:
+                DeathParticleSystemPrefab = WaterExplosionPrefab;
+                break;
+            case ElementType.Fire:
+                DeathParticleSystemPrefab = FireExplosionPrefab;
+                break;
+
+            default:
+                DeathParticleSystemPrefab = StandardExplosionPrefab;
+                break;
+        }
+       
     }
 
     public int GetDamageDealt(int baseDamage)
@@ -145,7 +190,7 @@ public class Bomb : MonoBehaviour,IDraggable, IDamageable
 
                 //FIX GLITCH THAT BOMB GOES TO EDGE WHEN CLICKED
                 //Add feature that bomb can return to inventory, maybe by tagging it as tile idk yet!
-                //Add snap range back to it goes t original parents of none of the tiles are close enough
+                
                 if (_tMin.GetComponent<Tile>().AmIOccupied() == true)
                 {
                     transform.SetParent(_originalParent);
@@ -183,8 +228,6 @@ public class Bomb : MonoBehaviour,IDraggable, IDamageable
                     transform.localPosition = new Vector3(0, 1, 0);
                     _oldParent = _tMin;
                 }
-
-
 
             }
 

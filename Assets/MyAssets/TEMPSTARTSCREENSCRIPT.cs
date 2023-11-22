@@ -5,9 +5,14 @@ using UnityEngine.SceneManagement;
 
 public class TEMPSTARTSCREENSCRIPT : MonoBehaviour
 {
-    public void StartBtn()
+    public void IntroBtn()
     {
         SceneManager.LoadScene("Level_1");
+    }
+
+    public void StartBtn()
+    {
+        SceneManager.LoadScene("Introduction");
     }
 
     public void BackBtn()

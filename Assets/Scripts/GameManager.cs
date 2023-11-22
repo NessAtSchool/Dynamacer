@@ -63,21 +63,33 @@ public class GameManager : MonoBehaviour
         
     }
 
-    private bool IsDyomancyComplete()
+    private bool GridCleared()
     {
         foreach (Transform tile in _gridManager.Tiles)
         {
+   
             if (tile.GetComponentInChildren<IDamageable>() != null)
             {
-                if (tile.GetComponentInChildren<IDamageable>().IsDestroyed == false)
+
+                if (tile.GetComponentInChildren<IDamageable>().IsDestroyed == false && 
+                    tile.GetComponentInChildren<IDamageable>() is not Tower_Building)
                 {
                     return false;
                 } 
-                
+                else if (tile.GetComponentInChildren<IDamageable>().IsDestroyed == true && 
+                    tile.GetComponentInChildren<IDamageable>() is Tower_Building)
+                {
+
+                    return false;
+                }
+       
             }
+
+           
         }
 
         return true;
+     
     }
 
     private void HandleLoss()
@@ -94,19 +106,27 @@ public class GameManager : MonoBehaviour
         
         await Task.Delay(1000);
 
-        if (IsDyomancyComplete() == true)
+        if (GridCleared() == true)
         {
             UpdateGameState(GameState.Victory);
         }
         else
         {
-            UpdateGameState(GameState.Lose);
+            if (GridManager.Instance.TurnsLeft <= 0)
+            {
+                UpdateGameState(GameState.Lose);
+            }
+            else
+            {
+                UpdateGameState(GameState.SetUp);
+            }
+            
         }
 
     }
     private void HandleExecution()
     {
-        _gridManager.StartDetenation();
+        _gridManager.StartDetonation();
     }
     public void HandleExecutionButton()
     {
@@ -115,7 +135,7 @@ public class GameManager : MonoBehaviour
 
     private void HandleSetUp()
     {
-        
+
     }
 
     //DO THIS WITH SCIPTABLE OBJECTS IN THE FEATURE!!!!
@@ -152,18 +172,10 @@ public class GameManager : MonoBehaviour
 
     public void Next()
     {
-        if (SceneManager.GetActiveScene().name == "Start")
-        {
-            SceneManager.LoadScene("Level_1");
-        }
-        else
-        {
-            int currentLvlInt = int.Parse(RemoveLettersExample.RemoveLetters(SceneManager.GetActiveScene().name));
+        int currentLvlInt = int.Parse(RemoveLettersExample.RemoveLetters(SceneManager.GetActiveScene().name));
             currentLvlInt++;
-            //print($"Level_{currentLvlInt}");
-            //Scene scene = SceneManager.GetSceneByName($"Level_{currentLvlInt}");
-
-            if (currentLvlInt < 6)
+         
+            if (currentLvlInt < 10)
             {
                 SceneManager.LoadScene($"Level_{currentLvlInt}");
             }
@@ -172,18 +184,13 @@ public class GameManager : MonoBehaviour
                 SceneManager.LoadScene("End");
                 print("Thank you for playing you've reached the end of this demo!");
             }
-        }
-        
-      
-      
+         
     }
 
     public void Previous()
     {
         int currentLvlInt = int.Parse(RemoveLettersExample.RemoveLetters(SceneManager.GetActiveScene().name));
         currentLvlInt--;
-
-        
 
         if (currentLvlInt > 1)
         {

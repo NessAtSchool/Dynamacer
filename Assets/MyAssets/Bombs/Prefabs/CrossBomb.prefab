@@ -204,7 +204,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AffectedArea: []
   _range: 2
-  DeathParticleSystemPrefab: {fileID: 1000012903210382, guid: eb71e8a1ec8ef764f9b1bf9c7e1f0b31, type: 3}
+  FireExplosionPrefab: {fileID: 1000012903210382, guid: b225ee87235d71f44a03fa0d51a62a7b, type: 3}
+  WaterExplosionPrefab: {fileID: 1000012903210382, guid: ba81ca9a152422d4d91a8f5cc7a6a905, type: 3}
+  StandardExplosionPrefab: {fileID: 1000012903210382, guid: eb71e8a1ec8ef764f9b1bf9c7e1f0b31, type: 3}
   ExplosionPosition: {fileID: 8295400963016696118}
 --- !u!4 &8295400963016696118 stripped
 Transform:

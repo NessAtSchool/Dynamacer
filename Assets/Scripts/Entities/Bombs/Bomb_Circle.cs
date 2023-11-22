@@ -12,10 +12,6 @@ public class Bomb_Circle : Bomb
         int x = (int)parentTile.localPosition.x;
         int y = (int)parentTile.localPosition.y;
 
-        //TODO IMPLEMENT CIRCLE METHOD
-
-        //print($"{x},{y}");
-
         foreach (Transform tile in GridManager.Instance.Tiles)
         {
             for (int i = 0; i < _range; i++)

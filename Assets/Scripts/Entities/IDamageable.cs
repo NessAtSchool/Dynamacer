@@ -6,7 +6,8 @@ public interface IDamageable
 {
     int Health { get; }
     bool IsDestroyed { get; }
+   ElementType Element { get; }
 
-    public void TakeDamage(int amountOfDamage);
+    public void TakeDamage(int amountOfDamage, ElementType elementype);
 
 }

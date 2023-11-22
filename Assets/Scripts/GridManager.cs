@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using TMPro;
 
 public class GridManager : MonoBehaviour
 {
@@ -14,6 +16,13 @@ public class GridManager : MonoBehaviour
     public List<Transform> Tiles;
     private List<Bomb> _bombsToDetenate = new List<Bomb>();
     public List<GameObject> StartingBombs = new List<GameObject>();
+    [SerializeField] private int _turns = 1;
+    [SerializeField] private int _turnsLeft;
+    public TextMeshProUGUI TurnTracker;
+
+
+    public int TurnsLeft { get { return _turnsLeft; } private set { _turnsLeft = value; } }
+
     public GameObject CopyKeeper;
 
     private void Awake()
@@ -42,12 +51,7 @@ public class GridManager : MonoBehaviour
         {
             for (int y = 0; y < _height; y++)
             {
-                //spwan water tiles randomly in grassland
-                //var randomTile = Random.Range(0, 6) == 2 ? _waterTile : _grassTile;
-
-                //var spawnedTile = Instantiate(randomTile, new Vector3(x, y), Quaternion.Euler(90, 0, 0));
-                
-
+    
                 //All Grass
                 var spawnedTile = Instantiate(_grassTile, new Vector3(x , y , _grid.transform.position.z), Quaternion.Euler(90, 0, 0));
 
@@ -60,33 +64,26 @@ public class GridManager : MonoBehaviour
             }
         }
 
-        //float zDistance;
-
-        //if (_width > _height)
-        //{
-        //    zDistance = -_width;
-        //}
-        //else if (_height > _width)
-        //{
-        //    zDistance = -_height;
-        //}
-        //else
-        //{
-        //    zDistance = -_width;
-        //}
-
-        //_cam.transform.position = new Vector3((float)_grid.transform.position.x / 2 - 0.5f, (float)_grid.transform.position.y / 2 - 0.5f, zDistance);
-        GameManager.Instance.UpdateGameState(GameManager.GameState.SetUp);
+         GameManager.Instance.UpdateGameState(GameManager.GameState.SetUp);
     }
 
-    IEnumerator DetenateAllTheBombs()
+    IEnumerator DetonateAllTheBombs()
     {
         foreach (Bomb bomb in _bombsToDetenate)
         {
             if (bomb != null)
             {
-                bomb.Detenate();
+                foreach (Tile tile in bomb.AffectedArea)
+                {
+                    StartCoroutine(tile.HandleBombDetonation(bomb.Element));
+                }
+
             }
+        }
+
+        foreach (Bomb bomb in _bombsToDetenate)
+        {
+            bomb.Detonate();
         }
 
         GameManager.Instance.UpdateGameState(GameManager.GameState.Resolve);
@@ -94,8 +91,10 @@ public class GridManager : MonoBehaviour
     }
 
 
-    public void StartDetenation()
+    public void StartDetonation()
     {
+        UpdateTurn(-1);
+        
         _bombsToDetenate.Clear();
         foreach (Transform tile in Tiles)
         {
@@ -105,14 +104,16 @@ public class GridManager : MonoBehaviour
             }
         }
 
-        StartCoroutine(DetenateAllTheBombs());
+        StartCoroutine(DetonateAllTheBombs());
 
     }
 
+ 
     public void PrepareReset() 
     {
         OrginalGrid = Instantiate(_grid);
         OrginalGrid.SetActive(false);
+        ResetTurn();
 
         if (StartingBombs.Count <= 0)
         {
@@ -132,6 +133,20 @@ public class GridManager : MonoBehaviour
             Tiles.Add(tile.transform);
         }
 
+    }
+
+    private void UpdateTurn(int increment)
+    {
+        _turnsLeft += increment;
+
+        TurnTracker.text = _turnsLeft.ToString();
+    }
+
+    private void ResetTurn()
+    {
+        _turnsLeft = _turns;
+
+        TurnTracker.text = _turnsLeft.ToString();
     }
 
 }

@@ -5,25 +5,61 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
-    path: Assets/Scenes/Level_1.unity
+  - enabled: 0
+    path: Assets/Scenes/Demo V1/Test_Level_1.unity
     guid: 43d6845e628ad93468c55fd1216f1491
-  - enabled: 1
-    path: Assets/Scenes/Level_2.unity
+  - enabled: 0
+    path: Assets/Scenes/Demo V1/Test_Level_2.unity
     guid: 31f686161a1d2e04dbc3164079720329
-  - enabled: 1
-    path: Assets/Scenes/Level_3.unity
+  - enabled: 0
+    path: Assets/Scenes/Demo V1/Test_Level_3.unity
     guid: a813c88f9c647ba4488d0251e0c2fcbf
-  - enabled: 1
-    path: Assets/Scenes/Level_4.unity
+  - enabled: 0
+    path: Assets/Scenes/Demo V1/Test_Level_4.unity
     guid: fcbf62345a780e94bb172ba29eee19b5
-  - enabled: 1
-    path: Assets/Scenes/Level_5.unity
+  - enabled: 0
+    path: Assets/Scenes/Demo V1/Test_Level_5.unity
     guid: 83920cd15bd1e9047ad788bfbf7e9a23
-  - enabled: 1
-    path: Assets/Scenes/End.unity
+  - enabled: 0
+    path: Assets/Scenes/Demo V1/Test_End.unity
     guid: 71710058da4204847b3d1a8d2989f769
-  - enabled: 1
-    path: Assets/Scenes/Start.unity
+  - enabled: 0
+    path: Assets/Scenes/Demo V1/Test_Start.unity
     guid: ac67cf8c48399b5498c22d3128a8289d
+  - enabled: 1
+    path: Assets/Scenes/Demo V2/End.unity
+    guid: 737d4f8968dc64b48b67c48f4bcb8aec
+  - enabled: 1
+    path: Assets/Scenes/Demo V2/Level_1.unity
+    guid: 2979df1777687e64c87c8236e70916ed
+  - enabled: 1
+    path: Assets/Scenes/Demo V2/Level_2.unity
+    guid: eb514619b4acb014f956be155db1a80a
+  - enabled: 1
+    path: Assets/Scenes/Demo V2/Level_3.unity
+    guid: dacaccae41c82434c898daf9a7958177
+  - enabled: 1
+    path: Assets/Scenes/Demo V2/Level_4.unity
+    guid: 100ab7417a1cea24b8e42ca6fd95a645
+  - enabled: 1
+    path: Assets/Scenes/Demo V2/Level_5.unity
+    guid: 6f400d651bcc34349afb50c15297e207
+  - enabled: 1
+    path: Assets/Scenes/Demo V2/Level_6.unity
+    guid: 984c6904978eff14b86ac70e50e59bdf
+  - enabled: 1
+    path: Assets/Scenes/Demo V2/Level_7.unity
+    guid: b475ccdb566bd5043b491bd5edda163b
+  - enabled: 1
+    path: Assets/Scenes/Demo V2/Level_8.unity
+    guid: ceacbd6de350dde42b2f0f34ec1949d2
+  - enabled: 1
+    path: Assets/Scenes/Demo V2/Level_9.unity
+    guid: 9b3496971d1ceea4fb112cf5b8343f0f
+  - enabled: 1
+    path: Assets/Scenes/Demo V2/Level_10.unity
+    guid: d673801bfca72af48b8b5a57e737faf0
+  - enabled: 1
+    path: Assets/Scenes/Demo V2/Introduction.unity
+    guid: 124c6a00b3d1a9a4690f21ef43457b2a
   m_configObjects: {}

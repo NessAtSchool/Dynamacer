@@ -11,8 +11,6 @@ public class Bomb_X : Bomb
         int x = (int)parentTile.localPosition.x;
         int y = (int)parentTile.localPosition.y;
 
-
-        // print($"{x},{y}");
         foreach (Transform tile in GridManager.Instance.Tiles)
         {
             for (int i = 0; i < _range; i++)
