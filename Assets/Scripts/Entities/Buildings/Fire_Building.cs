@@ -4,10 +4,17 @@ using UnityEngine;
 
 public class Fire_Building : Building
 {
-    public override void TakeDamage(int amountOfDamage, ElementType elementype)
+    public override void TakeDamage(int amountOfDamage, Bomb bombOrigin)
     {
+        foreach (Bomb bomb in immuneToTheseBombs)
+        {
+            if (bomb == bombOrigin)
+            {
+                amountOfDamage = 0;
+            }
+        }
 
-        if (elementype == ElementType.Water)
+        if (bombOrigin.Element == ElementType.Water)
         {
             _health -= amountOfDamage;
         }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Bomb_Horizontal :Bomb
 {
-    public override void HighlightBobShape(Transform parentTile)
+    public override void HighlightBombShape(Transform parentTile)
     {
         AffectedArea.Clear();
 

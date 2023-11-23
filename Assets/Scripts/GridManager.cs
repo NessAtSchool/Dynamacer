@@ -14,12 +14,12 @@ public class GridManager : MonoBehaviour
     public GameObject _inventory;
     public GameObject OrginalGrid;
     public List<Transform> Tiles;
-    private List<Bomb> _bombsToDetenate = new List<Bomb>();
+    private List<Bomb> _bombsToDetonate = new List<Bomb>();
     public List<GameObject> StartingBombs = new List<GameObject>();
     [SerializeField] private int _turns = 1;
     [SerializeField] private int _turnsLeft;
     public TextMeshProUGUI TurnTracker;
-
+    public GameObject blockade;
 
     public int TurnsLeft { get { return _turnsLeft; } private set { _turnsLeft = value; } }
 
@@ -69,7 +69,25 @@ public class GridManager : MonoBehaviour
 
     IEnumerator DetonateAllTheBombs()
     {
-        foreach (Bomb bomb in _bombsToDetenate)
+        //CHEK IF THERE IS BLOCKADE!!!!
+        bool hasBlockade = false;
+        foreach (Transform tile in Tiles)
+        {
+            if (tile.GetComponentInChildren<Blockade>() != null)
+            {
+                hasBlockade = true;
+                break;
+            }
+        
+        }
+
+        if (hasBlockade == true)
+        {
+            CheckForBlockade();
+        }
+
+        
+        foreach (Bomb bomb in _bombsToDetonate)
         {
             if (bomb != null)
             {
@@ -81,9 +99,9 @@ public class GridManager : MonoBehaviour
             }
         }
 
-        foreach (Bomb bomb in _bombsToDetenate)
+        foreach (Bomb bomb in _bombsToDetonate)
         {
-            bomb.Detonate();
+            bomb.Detonate(bomb);
         }
 
         GameManager.Instance.UpdateGameState(GameManager.GameState.Resolve);
@@ -93,19 +111,28 @@ public class GridManager : MonoBehaviour
 
     public void StartDetonation()
     {
+       
         UpdateTurn(-1);
         
-        _bombsToDetenate.Clear();
+        _bombsToDetonate.Clear();
         foreach (Transform tile in Tiles)
         {
             if (tile.GetComponentInChildren<Bomb>() != null)
             {
-                _bombsToDetenate.Add(tile.GetComponentInChildren<Bomb>());
+                _bombsToDetonate.Add(tile.GetComponentInChildren<Bomb>());
             }
         }
 
         StartCoroutine(DetonateAllTheBombs());
 
+        //CLEAR ALL THE IMMUNITY LISTS IN THE TILES:
+        foreach (Transform tile in Tiles)
+        {
+            if (tile.GetComponentInChildren<Building>() != null)
+            {
+                tile.GetComponentInChildren<Building>().ClearImmunity();
+            }
+        }
     }
 
  
@@ -147,6 +174,31 @@ public class GridManager : MonoBehaviour
         _turnsLeft = _turns;
 
         TurnTracker.text = _turnsLeft.ToString();
+    }
+
+    private void CheckForBlockade()
+    {
+        foreach(Bomb bomb in _bombsToDetonate)
+        {
+            
+            foreach (Transform tile in Tiles)
+            {
+                RaycastHit hit;
+                Physics.Raycast(bomb.transform.position, (tile.position - bomb.transform.position), out hit, 10f);
+                Debug.DrawRay(bomb.transform.position, (tile.position - bomb.transform.position), Color.red, 10);
+                if (hit.collider != null)
+                {
+                    if (hit.collider.gameObject.CompareTag("Blockade") == true)
+                    {
+                        print("blockade hit  " + bomb.transform.ToString() + "  " + tile.name);
+                        //print(hit.transform.ToString() + " pos");
+                        tile.transform.gameObject.GetComponent<Tile>().MakeImmunetoBomb(bomb);
+                    }
+                }
+                
+                
+            }
+        }
     }
 
 }

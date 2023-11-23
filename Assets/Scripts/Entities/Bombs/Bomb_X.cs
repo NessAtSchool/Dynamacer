@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Bomb_X : Bomb
 {
-    public override void HighlightBobShape(Transform parentTile)
+    public override void HighlightBombShape(Transform parentTile)
     {
         AffectedArea.Clear();
 
@@ -21,8 +21,6 @@ public class Bomb_X : Bomb
                     AffectedArea.Add(tile.gameObject.GetComponent<Tile>());
                 }
             }
-
-
         }
 
         foreach (Tile tile in AffectedArea)

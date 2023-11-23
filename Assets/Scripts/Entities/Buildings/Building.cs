@@ -16,6 +16,7 @@ public abstract class Building : MonoBehaviour, IDamageable
     [SerializeField] protected bool _immuneToFire = false;
     [SerializeField] protected bool _immuneToWater = false;
 
+    protected List<Bomb> immuneToTheseBombs = new List<Bomb>();
 
     public ElementType Element { get { return _element; } private set { _element = value; } }
     public int Health { get { return _health; } private set { _health = value; } }
@@ -45,15 +46,23 @@ public abstract class Building : MonoBehaviour, IDamageable
     }
 
 
-    public virtual void TakeDamage(int amountOfDamage, ElementType elementype)
+    public virtual void TakeDamage(int amountOfDamage, Bomb bombOrigin)
     {
-        if (elementype == ElementType.Water && _immuneToWater == false ||
-            elementype == ElementType.Fire && _immuneToFire == false ||
-            elementype == ElementType.None)
+        foreach (Bomb bomb in immuneToTheseBombs)
         {
+            if (bomb == bombOrigin)
+            {
+                amountOfDamage = 0;
+            }
+        }
+
+        if (bombOrigin.Element == ElementType.Water && _immuneToWater == false ||
+                    bombOrigin.Element == ElementType.Fire && _immuneToFire == false ||
+                    bombOrigin.Element == ElementType.None)
+            {
             _health -= amountOfDamage;
             Debug.Log("Taking damage: " + amountOfDamage);
-        }
+            }
 
 
         if (_health <= 0)
@@ -92,6 +101,16 @@ public abstract class Building : MonoBehaviour, IDamageable
         }
     }
 
+    public void ImmuneToBomb(Bomb bomb)
+    {
+        immuneToTheseBombs.Add(bomb);
+    }
+
+
+    public void ClearImmunity()
+    {
+        immuneToTheseBombs.Clear();
+    }
 
 }
 

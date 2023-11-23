@@ -11,6 +11,7 @@ public class GrassTile : Tile
     {
         _renderer.material = _grassMaterial;
         transform.rotation =Quaternion.Euler(-90, transform.rotation.y, transform.rotation.z);
+        
         //var isOffset = (x + y) % 2 == 1;
         //GetComponent<MeshFilter>().mesh = isOffset ? _baseOffsetMesh : _baseMesh;
     }

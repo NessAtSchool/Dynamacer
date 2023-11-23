@@ -8,6 +8,7 @@ public interface IDamageable
     bool IsDestroyed { get; }
    ElementType Element { get; }
 
-    public void TakeDamage(int amountOfDamage, ElementType elementype);
+    public void TakeDamage(int amountOfDamage, Bomb bombOrigin);
+ 
 
 }

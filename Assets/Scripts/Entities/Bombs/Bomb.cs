@@ -34,12 +34,12 @@ public class Bomb : MonoBehaviour,IDraggable, IDamageable
     }
 
 
-    public virtual void HighlightBobShape(Transform parentTile)
+    public virtual void HighlightBombShape(Transform parentTile)
     {
         return;
     }
 
-    public virtual void Detonate()
+    public virtual void Detonate(Bomb bomb)
     {
 
         foreach (Tile tile in AffectedArea)
@@ -48,7 +48,7 @@ public class Bomb : MonoBehaviour,IDraggable, IDamageable
             {
                 if (target.GetComponentInChildren<IDamageable>() != null)
                 {
-                    target.GetComponent<IDamageable>().TakeDamage(GetDamageDealt(_baseDamage), _element);
+                    target.GetComponent<IDamageable>().TakeDamage(GetDamageDealt(_baseDamage), bomb);
                 }
                 else
                 {
@@ -60,10 +60,13 @@ public class Bomb : MonoBehaviour,IDraggable, IDamageable
 
 
 
+    public void ImmuneToBomb(Bomb bomb)
+    {
 
+    }
  
 
-    public void TakeDamage(int amountOfDamage, ElementType elementype)
+    public void TakeDamage(int amountOfDamage, Bomb originalBomb)
     {
         _health -= amountOfDamage;
 
@@ -86,7 +89,7 @@ public class Bomb : MonoBehaviour,IDraggable, IDamageable
     public void ModifyRange(int mod)
     {
         _range += mod;
-        HighlightBobShape(transform.parent.transform);
+        HighlightBombShape(transform.parent.transform);
     }
 
     public void ModifyElement(ElementType element)
@@ -213,7 +216,7 @@ public class Bomb : MonoBehaviour,IDraggable, IDamageable
                         if (transform.GetComponent<Bomb>() != null)
                         {
                             transform.SetParent(_tMin);
-                            transform.GetComponent<Bomb>().HighlightBobShape(_tMin);
+                            transform.GetComponent<Bomb>().HighlightBombShape(_tMin);
 
                         }
                     }
@@ -235,12 +238,9 @@ public class Bomb : MonoBehaviour,IDraggable, IDamageable
             {
                 transform.SetParent(GridManager.Instance._inventory.transform);
                 transform.localPosition = new Vector3(0, 0, -250);
-
             }
         }
-
         return;
-
     }
 
     public Vector3 GetMousePos(Transform transform)
@@ -248,9 +248,6 @@ public class Bomb : MonoBehaviour,IDraggable, IDamageable
         var mousePos = _cam.ScreenToWorldPoint(Input.mousePosition);
         mousePos.z = transform.position.z;
         return mousePos;
-
-       
-
     }
 
     public void OnMouseOver()

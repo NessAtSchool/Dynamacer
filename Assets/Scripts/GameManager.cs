@@ -74,7 +74,15 @@ public class GameManager : MonoBehaviour
                 if (tile.GetComponentInChildren<IDamageable>().IsDestroyed == false && 
                     tile.GetComponentInChildren<IDamageable>() is not Tower_Building)
                 {
-                    return false;
+                    if (tile.GetComponentInChildren<IDamageable>() is Blockade == true)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                   
                 } 
                 else if (tile.GetComponentInChildren<IDamageable>().IsDestroyed == true && 
                     tile.GetComponentInChildren<IDamageable>() is Tower_Building)

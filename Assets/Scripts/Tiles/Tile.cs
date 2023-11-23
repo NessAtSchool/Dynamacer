@@ -138,6 +138,12 @@ public abstract class Tile : MonoBehaviour
       
     }
 
-
+    public void MakeImmunetoBomb(Bomb bomb)
+    {
+        if (GetComponentInChildren<Building>() != null)
+        {
+            GetComponentInChildren<Building>().ImmuneToBomb(bomb);
+        }
+    }
 
 }
