@@ -100,17 +100,22 @@ public class AffectedAreaOutline : MonoBehaviour {
   }
 
   void OnEnable() {
-    foreach (var renderer in renderers) {
 
-      // Append outline shaders
-      var materials = renderer.sharedMaterials.ToList();
+        foreach (var renderer in renderers)
+        {
 
-      materials.Add(outlineMaskMaterial);
-      materials.Add(outlineFillMaterial);
+            if (renderer != null)
+            {
+                // Append outline shaders
+                var materials = renderer.sharedMaterials.ToList();
 
-      renderer.materials = materials.ToArray();
+                materials.Add(outlineMaskMaterial);
+                materials.Add(outlineFillMaterial);
+
+                renderer.materials = materials.ToArray();
+            }
+        }
     }
-  }
 
   void OnValidate() {
 
@@ -138,15 +143,19 @@ public class AffectedAreaOutline : MonoBehaviour {
   }
 
   void OnDisable() {
+
     foreach (var renderer in renderers) {
 
-      // Remove outline shaders
-      var materials = renderer.sharedMaterials.ToList();
+        if (renderer != null)
+        {
+                // Remove outline shaders
+                var materials = renderer.sharedMaterials.ToList();
 
-      materials.Remove(outlineMaskMaterial);
-      materials.Remove(outlineFillMaterial);
+                materials.Remove(outlineMaskMaterial);
+                materials.Remove(outlineFillMaterial);
 
-      renderer.materials = materials.ToArray();
+                renderer.materials = materials.ToArray();
+        }
     }
   }
 

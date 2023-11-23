@@ -19,7 +19,6 @@ public class GridManager : MonoBehaviour
     [SerializeField] private int _turns = 1;
     [SerializeField] private int _turnsLeft;
     public TextMeshProUGUI TurnTracker;
-    public GameObject blockade;
 
     public int TurnsLeft { get { return _turnsLeft; } private set { _turnsLeft = value; } }
 
@@ -111,28 +110,31 @@ public class GridManager : MonoBehaviour
 
     public void StartDetonation()
     {
-       
-        UpdateTurn(-1);
-        
-        _bombsToDetonate.Clear();
-        foreach (Transform tile in Tiles)
+        if (TurnsLeft > 0)
         {
-            if (tile.GetComponentInChildren<Bomb>() != null)
+            UpdateTurn(-1);
+
+            _bombsToDetonate.Clear();
+            foreach (Transform tile in Tiles)
             {
-                _bombsToDetonate.Add(tile.GetComponentInChildren<Bomb>());
+                if (tile.GetComponentInChildren<Bomb>() != null)
+                {
+                    _bombsToDetonate.Add(tile.GetComponentInChildren<Bomb>());
+                }
+            }
+
+            StartCoroutine(DetonateAllTheBombs());
+
+            //CLEAR ALL THE IMMUNITY LISTS IN THE TILES:
+            foreach (Transform tile in Tiles)
+            {
+                if (tile.GetComponentInChildren<Building>() != null)
+                {
+                    tile.GetComponentInChildren<Building>().ClearImmunity();
+                }
             }
         }
-
-        StartCoroutine(DetonateAllTheBombs());
-
-        //CLEAR ALL THE IMMUNITY LISTS IN THE TILES:
-        foreach (Transform tile in Tiles)
-        {
-            if (tile.GetComponentInChildren<Building>() != null)
-            {
-                tile.GetComponentInChildren<Building>().ClearImmunity();
-            }
-        }
+   
     }
 
  

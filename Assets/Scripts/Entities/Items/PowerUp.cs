@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PowerUp : MonoBehaviour, IDraggable
 {
+    [SerializeField]protected bool _isTouching = false;
+    [SerializeField]protected Bomb _bombThatIsAffected;
 
     public virtual void OnTriggerEnter(Collider collision)
     {
@@ -11,6 +13,15 @@ public class PowerUp : MonoBehaviour, IDraggable
         return;
     }
 
+    private void OnTriggerExit(Collider collision)
+    {
+        _isTouching = false;
+    }
+
+    public virtual void ApplyEffect()
+    {
+        return;
+    }
 
     private Vector3 _dragOffset;
     private Camera _cam;
@@ -35,12 +46,18 @@ public class PowerUp : MonoBehaviour, IDraggable
     {
         transform.SetParent(null);
         transform.position = GetMousePos(transform) + _dragOffset;
+        transform.position = new Vector3(transform.position.x, transform.position.y, -2.5f);
     }
 
 
     public void OnMouseUp()
     {
-        if (transform != null)
+      
+        if (_isTouching == true)
+        {
+            ApplyEffect();
+        }
+        else if (transform != null)
         {
             transform.SetParent(_originalParent);
             transform.localPosition = new Vector3(0, 0, -250);

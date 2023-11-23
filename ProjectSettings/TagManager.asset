@@ -9,6 +9,7 @@ TagManager:
   - Damageable
   - Item
   - Blockade
+  - Canvas
   layers:
   - Default
   - TransparentFX

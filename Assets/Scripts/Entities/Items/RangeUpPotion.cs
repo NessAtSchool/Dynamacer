@@ -5,22 +5,46 @@ using UnityEngine;
 public class RangeUpPotion : PowerUp 
 {
     [SerializeField] private int _rangeUpAmount = 1;
+    
 
     //TO MAKE IT SO THAT BOTTLE ONLY DISSEAPPEARS IF YOU LET GO IF IT ON THE BOMB
     public override void OnTriggerEnter(Collider collision)
     {
-
-        if (gameObject.transform.parent != GridManager.Instance._inventory.transform && collision.gameObject.transform.parent != GridManager.Instance._inventory.transform && collision.gameObject.GetComponentInParent<Bomb>() != null)
+        
+        if (gameObject.transform.parent != GridManager.Instance._inventory.transform && 
+            collision.gameObject.transform.parent != GridManager.Instance._inventory.transform &&
+            collision.gameObject.GetComponentInParent<Bomb>() != null)
         {
-            Bomb bomb = collision.gameObject.GetComponentInParent<Bomb>();
-            bomb.ModifyRange(_rangeUpAmount);
+            _isTouching = true;
 
-            bomb.transform.GetChild(2).gameObject.SetActive(true);
+            _bombThatIsAffected = collision.gameObject.GetComponentInParent<Bomb>();
 
-            gameObject.SetActive(false);
+
         }
     }
 
 
+    public void OnTriggerStay(Collider collision)
+    {
+        if (gameObject.transform.parent != GridManager.Instance._inventory.transform &&
+           collision.gameObject.transform.parent != GridManager.Instance._inventory.transform &&
+           collision.gameObject.GetComponentInParent<Bomb>() != null)
+        {
+            _isTouching = true;
+
+            _bombThatIsAffected = collision.gameObject.GetComponentInParent<Bomb>();
+
+
+        }
+    }
+
+    public override void ApplyEffect()
+    {
+        _bombThatIsAffected.ModifyRange(_rangeUpAmount);
+
+        _bombThatIsAffected.transform.GetChild(2).gameObject.SetActive(true);
+
+        Destroy(gameObject);
+    }
 
 }

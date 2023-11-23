@@ -20,7 +20,7 @@ public abstract class Tile : MonoBehaviour
         _renderer.material = _baseMaterial;
     }
 
-    void LateUpdate()
+    void Update()
     {
         if (this != null)
         {
@@ -120,7 +120,7 @@ public abstract class Tile : MonoBehaviour
             _detonatedBombTypes.Add(bombType);
 
             // Check if both types of bombs have detonated
-            if (_detonatedBombTypes.Count == 2)
+            if (_detonatedBombTypes.Contains(ElementType.Water) && _detonatedBombTypes.Contains(ElementType.Fire))
             {
                 foreach (ElementType item in _detonatedBombTypes)
                 {

@@ -7,14 +7,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1126704163411868532, guid: d3ea122444cedea44b25ba513e6383f7, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 1126704163411868532, guid: d3ea122444cedea44b25ba513e6383f7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90
+      objectReference: {fileID: 0}
     - target: {fileID: 5075384152275488195, guid: d3ea122444cedea44b25ba513e6383f7, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: edc6106c915984de2b613a68e4945671, type: 2}
+      objectReference: {fileID: 2100000, guid: 19ac4fcfcf42b4344a6c7d97a5cd61fc, type: 2}
     - target: {fileID: 5075384152276487939, guid: d3ea122444cedea44b25ba513e6383f7, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 3065556405952602016, guid: 0e437d184940dc440b72cbfa4ff50275, type: 3}
+      objectReference: {fileID: 2928825617089358356, guid: 0e437d184940dc440b72cbfa4ff50275, type: 3}
     - target: {fileID: 5075384152277258017, guid: d3ea122444cedea44b25ba513e6383f7, type: 3}
       propertyPath: m_IsTrigger
       value: 0

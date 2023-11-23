@@ -20,6 +20,8 @@ public class Bomb : MonoBehaviour,IDraggable, IDamageable
 
     [SerializeField] private ElementType _element = ElementType.None;
 
+    private List<Transform> thingsBombsCanBeOn = new List<Transform>();
+
 
 
     public ElementType Element { get { return _element; } private set { _element = value; } }
@@ -31,6 +33,15 @@ public class Bomb : MonoBehaviour,IDraggable, IDamageable
     private void Start()
     {
         ModifyElement(_element);
+
+        thingsBombsCanBeOn.Add(GridManager.Instance._inventory.transform);
+     
+        foreach (Transform tile in GridManager.Instance.Tiles)
+        {
+          thingsBombsCanBeOn.Add(tile);
+        }
+
+
     }
 
 
@@ -49,6 +60,7 @@ public class Bomb : MonoBehaviour,IDraggable, IDamageable
                 if (target.GetComponentInChildren<IDamageable>() != null)
                 {
                     target.GetComponent<IDamageable>().TakeDamage(GetDamageDealt(_baseDamage), bomb);
+                    Destroy(bomb);
                 }
                 else
                 {
@@ -62,7 +74,7 @@ public class Bomb : MonoBehaviour,IDraggable, IDamageable
 
     public void ImmuneToBomb(Bomb bomb)
     {
-
+        return;
     }
  
 
@@ -74,10 +86,12 @@ public class Bomb : MonoBehaviour,IDraggable, IDamageable
         {
             _isDestroyed = true;
 
+
+            
             transform.gameObject.GetComponent<Renderer>().enabled = false;
             foreach (Renderer thing in transform.GetComponentsInChildren<Renderer>())
             {
-                thing.enabled = false;
+                Destroy(thing);
             }
             DeathParticleSystemPrefab.transform.localScale = ExplosionPosition.localScale;
             Instantiate(DeathParticleSystemPrefab, ExplosionPosition.position, ExplosionPosition.rotation);
@@ -155,6 +169,7 @@ public class Bomb : MonoBehaviour,IDraggable, IDamageable
 
     public void OnMouseDrag()
     {
+        
         transform.SetParent(null);
         transform.position = GetMousePos(transform) + _dragOffset;
     }
@@ -168,6 +183,13 @@ public class Bomb : MonoBehaviour,IDraggable, IDamageable
                 tile.gameObject.GetComponent<AffectedAreaOutline>().enabled = false;
             }
         }
+
+
+        if (gameObject.transform.parent == GridManager.Instance._inventory.transform)
+        {
+            AffectedArea.Clear();
+        }
+
     }
 
     public void OnMouseUp()
@@ -180,8 +202,8 @@ public class Bomb : MonoBehaviour,IDraggable, IDamageable
 
             if (gameObject.GetComponent<Bomb>() != null)
             {
-
-                foreach (Transform tile in GridManager.Instance.Tiles)
+                
+                foreach (Transform tile in thingsBombsCanBeOn)
                 {
                     float dist = Vector3.Distance(tile.position, _currentPos);
                     if (dist < _minDist)
@@ -193,12 +215,18 @@ public class Bomb : MonoBehaviour,IDraggable, IDamageable
 
                 //FIX GLITCH THAT BOMB GOES TO EDGE WHEN CLICKED
                 //Add feature that bomb can return to inventory, maybe by tagging it as tile idk yet!
-                
-                if (_tMin.GetComponent<Tile>().AmIOccupied() == true)
+
+                if (_tMin.GetComponent<Tile>() == null)
+                {
+                    transform.SetParent(_originalParent);
+                    transform.position = Vector3.zero;
+                } 
+                else if (_tMin.GetComponent<Tile>().AmIOccupied() == true)
                 {
                     transform.SetParent(_originalParent);
                     transform.position = Vector3.zero;
                 }
+
                 else if (_minDist >= _snapRange)
                 {
                     transform.SetParent(_originalParent);
@@ -206,7 +234,7 @@ public class Bomb : MonoBehaviour,IDraggable, IDamageable
                 }
                 else
                 {
-                    if (_tMin != _oldParent)
+                    if (_tMin != _oldParent && _tMin.GetComponent<WaterTile>() == null)
                     {
                         foreach (Tile tile in transform.GetComponent<Bomb>().AffectedArea)
                         {
@@ -232,6 +260,15 @@ public class Bomb : MonoBehaviour,IDraggable, IDamageable
                     _oldParent = _tMin;
                 }
 
+                if (transform.parent != null)
+                {
+                    if (transform.parent.CompareTag("Canvas"))
+                    {
+                        transform.SetParent(_originalParent);
+                    }
+                }
+          
+
             }
 
             else
@@ -240,6 +277,8 @@ public class Bomb : MonoBehaviour,IDraggable, IDamageable
                 transform.localPosition = new Vector3(0, 0, -250);
             }
         }
+
+      
         return;
     }
 

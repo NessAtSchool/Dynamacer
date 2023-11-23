@@ -27,6 +27,10 @@ PrefabInstance:
       propertyPath: outlineColor.r
       value: 0.8784227
       objectReference: {fileID: 0}
+    - target: {fileID: 5075384152275488195, guid: d3ea122444cedea44b25ba513e6383f7, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: e227e0cd515067e4cb3a7149e259963e, type: 2}
     - target: {fileID: 5075384152276487939, guid: d3ea122444cedea44b25ba513e6383f7, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -106,6 +110,10 @@ PrefabInstance:
     - target: {fileID: 5075384152277488387, guid: d3ea122444cedea44b25ba513e6383f7, type: 3}
       propertyPath: m_Name
       value: GrassTile
+      objectReference: {fileID: 0}
+    - target: {fileID: 5420630433834935998, guid: d3ea122444cedea44b25ba513e6383f7, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d3ea122444cedea44b25ba513e6383f7, type: 3}

@@ -79,9 +79,10 @@ public abstract class Building : MonoBehaviour, IDamageable
 
             for (int i = 0; i < gameObject.transform.childCount - 1; i++)
             {
-                if (gameObject.transform.GetChild(i).gameObject.GetComponent<Renderer>() != null)
+                if (gameObject.transform.GetChild(i).gameObject != null)
                 {
-                    gameObject.transform.GetChild(i).gameObject.GetComponent<Renderer>().enabled = false;
+                    Destroy(gameObject.transform.GetChild(i).gameObject);
+                    
                 }
                 
             }

@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     private GridManager _gridManager;
     public GameState State;
+    public GameObject ResolvePanels;
 
     private void Awake()
     {
@@ -102,12 +103,14 @@ public class GameManager : MonoBehaviour
 
     private void HandleLoss()
     {
-        print("BOO! They're still alive!");
+        ResolvePanels.SetActive(true);
+        ResolvePanels.transform.GetChild(1).gameObject.SetActive(true);
     }
 
     private void HandleVictory()
     {
-        print("YAY! Dynamancy Complete!");
+        ResolvePanels.SetActive(true);
+        ResolvePanels.transform.GetChild(0).gameObject.SetActive(true);
     }
     private async void HandleResolve()
     {
@@ -183,7 +186,7 @@ public class GameManager : MonoBehaviour
         int currentLvlInt = int.Parse(RemoveLettersExample.RemoveLetters(SceneManager.GetActiveScene().name));
             currentLvlInt++;
          
-            if (currentLvlInt < 10)
+            if (currentLvlInt < 12)
             {
                 SceneManager.LoadScene($"Level_{currentLvlInt}");
             }
@@ -208,6 +211,11 @@ public class GameManager : MonoBehaviour
         {
             SceneManager.LoadScene("Start");
         }
+    }
+
+    public void RedoBtn()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
 
