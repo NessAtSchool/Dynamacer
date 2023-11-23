@@ -48,45 +48,45 @@ public abstract class Building : MonoBehaviour, IDamageable
 
     public virtual void TakeDamage(int amountOfDamage, Bomb bombOrigin)
     {
-        foreach (Bomb bomb in immuneToTheseBombs)
-        {
-            if (bomb == bombOrigin)
-            {
-                amountOfDamage = 0;
-            }
-        }
+        //foreach (Bomb bomb in immuneToTheseBombs)
+        //{
+        //    if (bomb == bombOrigin)
+        //    {
+        //        amountOfDamage = 0;
+        //    }
+        //}
 
-        if (bombOrigin.Element == ElementType.Water && _immuneToWater == false ||
-                    bombOrigin.Element == ElementType.Fire && _immuneToFire == false ||
-                    bombOrigin.Element == ElementType.None)
-            {
-            _health -= amountOfDamage;
-            Debug.Log("Taking damage: " + amountOfDamage);
-            }
+        //if (bombOrigin.Element == ElementType.Water && _immuneToWater == false ||
+        //            bombOrigin.Element == ElementType.Fire && _immuneToFire == false ||
+        //            bombOrigin.Element == ElementType.None)
+        //    {
+        //    _health -= amountOfDamage;
+        //    Debug.Log("Taking damage: " + amountOfDamage);
+        //    }
 
 
-        if (_health <= 0)
-        {
-            _isDestroyed = true;
+        //if (_health <= 0)
+        //{
+        //    _isDestroyed = true;
 
-            if (HealthDisplay != null)
-            {
-                GetComponentInChildren<TextMeshProUGUI>().enabled = false;
-            }
+        //    if (HealthDisplay != null)
+        //    {
+        //        GetComponentInChildren<TextMeshProUGUI>().enabled = false;
+        //    }
 
-            DeathParticleSystemPrefab.transform.localScale = ExplosionPosition.localScale;
-            Instantiate(DeathParticleSystemPrefab, ExplosionPosition.position, ExplosionPosition.rotation);
+        //    DeathParticleSystemPrefab.transform.localScale = ExplosionPosition.localScale;
+        //    Instantiate(DeathParticleSystemPrefab, ExplosionPosition.position, ExplosionPosition.rotation);
 
-            for (int i = 0; i < gameObject.transform.childCount - 1; i++)
-            {
-                if (gameObject.transform.GetChild(i).gameObject != null)
-                {
-                    Destroy(gameObject.transform.GetChild(i).gameObject);
+        //    for (int i = 0; i < gameObject.transform.childCount - 1; i++)
+        //    {
+        //        if (gameObject.transform.GetChild(i).gameObject != null)
+        //        {
+        //            Destroy(gameObject.transform.GetChild(i).gameObject);
                     
-                }
+        //        }
                 
-            }
-        }
+        //    }
+        //}
     }
 
 

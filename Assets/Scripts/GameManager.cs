@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Scripting;
 
 public class GameManager : MonoBehaviour
 {
@@ -101,12 +102,14 @@ public class GameManager : MonoBehaviour
      
     }
 
+    [Preserve]
     private void HandleLoss()
     {
         ResolvePanels.SetActive(true);
         ResolvePanels.transform.GetChild(1).gameObject.SetActive(true);
     }
 
+    [Preserve]
     private void HandleVictory()
     {
         ResolvePanels.SetActive(true);
@@ -186,7 +189,7 @@ public class GameManager : MonoBehaviour
         int currentLvlInt = int.Parse(RemoveLettersExample.RemoveLetters(SceneManager.GetActiveScene().name));
             currentLvlInt++;
          
-            if (currentLvlInt < 12)
+            if (currentLvlInt <= 12)
             {
                 SceneManager.LoadScene($"Level_{currentLvlInt}");
             }

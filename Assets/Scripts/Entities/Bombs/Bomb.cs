@@ -86,16 +86,18 @@ public class Bomb : MonoBehaviour,IDraggable, IDamageable
         {
             _isDestroyed = true;
 
+            if (DeathParticleSystemPrefab.transform != null)
+            {
+                DeathParticleSystemPrefab.transform.localScale = ExplosionPosition.localScale;
+                Instantiate(DeathParticleSystemPrefab, ExplosionPosition.position, ExplosionPosition.rotation);
+            }
 
-            
             transform.gameObject.GetComponent<Renderer>().enabled = false;
             foreach (Renderer thing in transform.GetComponentsInChildren<Renderer>())
             {
                 Destroy(thing);
             }
-            DeathParticleSystemPrefab.transform.localScale = ExplosionPosition.localScale;
-            Instantiate(DeathParticleSystemPrefab, ExplosionPosition.position, ExplosionPosition.rotation);
-
+          
         }
 
     }
