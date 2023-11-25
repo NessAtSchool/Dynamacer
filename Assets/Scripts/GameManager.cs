@@ -14,7 +14,11 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     private GridManager _gridManager;
     public GameState State;
-    public GameObject ResolvePanels;
+    [SerializeField] private GameObject canvas;
+    [SerializeField] private GameObject lossPanel;
+    [SerializeField] private GameObject victoryPanel;
+    [SerializeField] private GameObject panelLocation;
+
 
     private void Awake()
     {
@@ -33,7 +37,13 @@ public class GameManager : MonoBehaviour
         {
             UpdateGameState(GameState.SetUp);
         }
-       
+
+        canvas = GameObject.FindWithTag("Canvas");
+        victoryPanel = GameObject.Find("VictoryPanel");
+        lossPanel = GameObject.Find("LossPanel");
+        panelLocation = GameObject.Find("PanelLocation");
+        
+
     }
 
     public void UpdateGameState(GameState newState)
@@ -105,15 +115,15 @@ public class GameManager : MonoBehaviour
     [Preserve]
     private void HandleLoss()
     {
-        ResolvePanels.SetActive(true);
-        ResolvePanels.transform.GetChild(1).gameObject.SetActive(true);
+        lossPanel.transform.position = panelLocation.transform.position;
+        
     }
 
     [Preserve]
     private void HandleVictory()
     {
-        ResolvePanels.SetActive(true);
-        ResolvePanels.transform.GetChild(0).gameObject.SetActive(true);
+        victoryPanel.transform.position = panelLocation.transform.position;
+
     }
     private async void HandleResolve()
     {

@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class Water_Building : Building
 {
+    
     public override void TakeDamage(int amountOfDamage, Bomb bombOrigin)
     {
+        _immuneToWater = true;
+
         foreach (Bomb bomb in immuneToTheseBombs)
         {
             if (bomb == bombOrigin)
@@ -14,18 +17,33 @@ public class Water_Building : Building
             }
         }
 
-        if (bombOrigin.Element == ElementType.Fire)
+        if (bombOrigin.Element == ElementType.Water && _immuneToWater == false ||
+                    bombOrigin.Element == ElementType.Fire && _immuneToFire == false ||
+                    bombOrigin.Element == ElementType.None)
         {
             _health -= amountOfDamage;
+            Debug.Log("Taking damage: " + amountOfDamage);
         }
+
+      
 
         if (_health <= 0)
         {
             _isDestroyed = true;
 
-            DeathParticleSystemPrefab.transform.localScale = ExplosionPosition.localScale;
-            Instantiate(DeathParticleSystemPrefab, ExplosionPosition.position, ExplosionPosition.rotation);
-            gameObject.transform.GetChild(0).gameObject.GetComponent<Renderer>().enabled = false;
+
+            if (DeathParticleSystemPrefab.transform != null)
+            {
+                DeathParticleSystemPrefab.transform.localScale = ExplosionPosition.localScale;
+                Instantiate(DeathParticleSystemPrefab, ExplosionPosition.position, ExplosionPosition.rotation);
+            }
+
+            foreach (Renderer thing in transform.GetComponentsInChildren<Renderer>())
+            {
+                Destroy(thing);
+            }
+
+            Destroy(transform.gameObject);
 
         }
     }

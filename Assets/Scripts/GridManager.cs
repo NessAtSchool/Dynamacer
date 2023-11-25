@@ -98,6 +98,7 @@ public class GridManager : MonoBehaviour
             }
         }
 
+        SoundManager.musicManagerInstance.PlayBombSound();
         foreach (Bomb bomb in _bombsToDetonate)
         {
             bomb.Detonate(bomb);

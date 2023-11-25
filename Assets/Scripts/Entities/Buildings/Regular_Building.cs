@@ -20,9 +20,20 @@ public class Regular_Building : Building
         {
             _isDestroyed = true;
 
-            DeathParticleSystemPrefab.transform.localScale = ExplosionPosition.localScale;
-            Instantiate(DeathParticleSystemPrefab, ExplosionPosition.position, ExplosionPosition.rotation);
-            gameObject.transform.GetChild(0).gameObject.GetComponent<Renderer>().enabled = false;
+
+            if (DeathParticleSystemPrefab.transform != null)
+            {
+                DeathParticleSystemPrefab.transform.localScale = ExplosionPosition.localScale;
+                Instantiate(DeathParticleSystemPrefab, ExplosionPosition.position, ExplosionPosition.rotation);
+            }
+
+            foreach (Renderer thing in transform.GetComponentsInChildren<Renderer>())
+            {
+                Destroy(thing);
+            }
+
+            Destroy(transform.gameObject);
+
 
         }
     }

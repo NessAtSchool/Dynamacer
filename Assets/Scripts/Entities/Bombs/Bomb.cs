@@ -92,11 +92,14 @@ public class Bomb : MonoBehaviour,IDraggable, IDamageable
                 Instantiate(DeathParticleSystemPrefab, ExplosionPosition.position, ExplosionPosition.rotation);
             }
 
-            transform.gameObject.GetComponent<Renderer>().enabled = false;
             foreach (Renderer thing in transform.GetComponentsInChildren<Renderer>())
             {
                 Destroy(thing);
             }
+
+            Destroy(transform.gameObject);
+
+           
           
         }
 
@@ -145,7 +148,7 @@ public class Bomb : MonoBehaviour,IDraggable, IDamageable
     private float _minDist;
     private Vector3 _currentPos;
     private float _snapRange = 8f;
-
+    private bool isDragging = false;
 
 
     public Vector3 DragOffset { get { return _dragOffset; } private set { _dragOffset = value; } }
@@ -171,13 +174,14 @@ public class Bomb : MonoBehaviour,IDraggable, IDamageable
 
     public void OnMouseDrag()
     {
-        
+        isDragging = true;
         transform.SetParent(null);
         transform.position = GetMousePos(transform) + _dragOffset;
     }
 
     public void OnMouseExit()
     {
+        isDragging = false;
         if (gameObject.GetComponent<Bomb>() != null)
         {
             foreach (Tile tile in transform.GetComponent<Bomb>().AffectedArea)
@@ -262,13 +266,7 @@ public class Bomb : MonoBehaviour,IDraggable, IDamageable
                     _oldParent = _tMin;
                 }
 
-                if (transform.parent != null)
-                {
-                    if (transform.parent.CompareTag("Canvas"))
-                    {
-                        transform.SetParent(_originalParent);
-                    }
-                }
+              
           
 
             }
@@ -278,9 +276,18 @@ public class Bomb : MonoBehaviour,IDraggable, IDamageable
                 transform.SetParent(GridManager.Instance._inventory.transform);
                 transform.localPosition = new Vector3(0, 0, -250);
             }
+
+
         }
 
-      
+        if (transform.parent != null)
+        {
+            if (transform.parent.CompareTag("Canvas"))
+            {
+                transform.SetParent(_originalParent);
+            }
+        }
+
         return;
     }
 
